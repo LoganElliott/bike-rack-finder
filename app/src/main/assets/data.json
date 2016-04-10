@@ -1,0 +1,59 @@
+{
+	"URacks": [
+		{
+			"title": "Ponsonby Central",
+			"location": "Corner of Ponsonby and Richmond Rd",
+			"latitude": "-36.85643",
+			"longitude": "174.74645",
+			"type": "U-Rack",
+			"numberOfRacks": "4",
+			"isSheltered":  "false"
+		},
+		{
+			"title": "Aotea Square",
+			"location": "Next to wall opposite Aotea centre bottom entrance",
+			"latitude": "-36.851561",
+			"longitude": "174.762943",
+			"type": "U-Rack",
+			"numberOfRacks": "4",
+			"isSheltered":  "true"
+		},
+		{
+			"title": "Aotea Square",
+			"location": "Next to wall next to Aotea centre bottom entrance",
+			"latitude": "-36.851711",
+			"longitude": "174.762830",
+			"type": "U-Rack",
+			"numberOfRacks": "4",
+			"isSheltered":  "true"
+		},
+		{
+			"title": "Deloitte",
+			"location": "Next to main entrance",
+			"latitude": "-36.846257",
+			"longitude": "174.766337",
+			"type": "U-Rack",
+			"numberOfRacks": "3",
+			"isSheltered":  "false"
+		},
+		{
+			"title": "Auckland Central Library",
+			"location": "Opposite main entrance",
+			"latitude": "-36.851655",
+			"longitude": "174.764991",
+			"type": "U-Rack",
+			"numberOfRacks": "4",
+			"isSheltered":  "false"
+		},
+		{
+			"title": "Auckland Central Library",
+			"location": "Next to stairs 40m from main entrance",
+			"latitude": "-36.851944",
+			"longitude": "174.765065",
+			"type": "U-Rack",
+			"numberOfRacks": "4",
+			"isSheltered":  "true"
+		}
+
+	]
+}

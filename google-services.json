@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "bike-rack-finder",
+    "project_number": "33155619969",
+    "name": "Bike Rack Finder"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33155619969:android:91fabbdb33ee0f1f",
+        "client_id": "android:com.example.logan.bikerackfinder",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.example.logan.bikerackfinder",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33155619969-1frp35j0em5c1desdq6fq2m5otdm535q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.logan.bikerackfinder",
+            "certificate_hash": "E4BBFF7E630EE48718B1148821C11906C76EEC58"
+          }
+        },
+        {
+          "client_id": "33155619969-5bcscd1daepn9bf1gn5fdcbpndt1rdgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
