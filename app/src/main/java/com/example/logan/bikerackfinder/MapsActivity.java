@@ -18,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,6 +33,9 @@ import java.util.ArrayList;
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Menu menu;
+    private Marker marker = null;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -61,25 +65,47 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
+        menu.findItem(R.id.action_close).setVisible(false);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(new LatLng(-36.849067, 174.765261));
+        markerOptions.title("New marker!");
+        markerOptions.draggable(true);
+
         switch (item.getItemId()) {
             case R.id.action_add:
                 // User chose the "add" item, show the field to add a maker
-                Context context = getApplicationContext();
-                CharSequence text = "Add marker toast!";
-                int duration = Toast.LENGTH_SHORT;
+                marker = mMap.addMarker(markerOptions);
+                marker.showInfoWindow();
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                item.setVisible(false);
+                menu.findItem(R.id.action_close).setVisible(true);
+
+                return true;
+
+            case R.id.action_close:
+                // User chose the "add" item, show the field to add a maker
+                marker.remove();
+
+                item.setVisible(false);
+                menu.findItem(R.id.action_add).setVisible(true);
+
                 return true;
 
             case R.id.action_info_page:
                 // User chose the "info" action, which shows information about the app
                 // as a favorite...
+                Context context = getApplicationContext();
+                CharSequence text = "Info page toast!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
                 return true;
 
             default:

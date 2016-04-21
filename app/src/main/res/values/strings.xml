@@ -3,4 +3,5 @@
     <string name="title_activity_maps">Bike Rack Finder</string>
     <string name="action_add">Add rack</string>
     <string name="action_info_page">show infomation</string>
+    <string name="action_close">close</string>
 </resources>
