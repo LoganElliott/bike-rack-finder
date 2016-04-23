@@ -1,14 +1,24 @@
 package com.example.logan.bikerackfinder;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,9 +30,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Menu menu;
+    private Marker marker = null;
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +50,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        setTitle(null);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        myToolbar.setLogo(R.drawable.bike);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
+        menu.findItem(R.id.action_close).setVisible(false);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(new LatLng(-36.849067, 174.765261));
+        markerOptions.title("New marker!");
+        markerOptions.draggable(true);
+
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                // User chose the "add" item, show the field to add a maker
+                marker = mMap.addMarker(markerOptions);
+                marker.showInfoWindow();
+
+                item.setVisible(false);
+                menu.findItem(R.id.action_close).setVisible(true);
+
+                return true;
+
+            case R.id.action_close:
+                // User chose the "add" item, show the field to add a maker
+                marker.remove();
+
+                item.setVisible(false);
+                menu.findItem(R.id.action_add).setVisible(true);
+
+                return true;
+
+            case R.id.action_info_page:
+                // User chose the "info" action, which shows information about the app
+                // as a favorite...
+                Context context = getApplicationContext();
+                CharSequence text = "Info page toast!";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
 
     /**
      * Manipulates the map once available.
@@ -56,13 +137,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         AddMarkers(bikeRacks);
     }
 
-    private ArrayList<BikeRack> getBikeRacks(){
+    private ArrayList<BikeRack> getBikeRacks() {
         ArrayList<BikeRack> bikeRacks = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(loadJSONFromAsset());
             String uRacks = jsonObject.getJSONArray("URacks").toString();
             Gson gson = new Gson();
-            bikeRacks = gson.fromJson(uRacks, new TypeToken<ArrayList<BikeRack>>(){}.getType());
+            bikeRacks = gson.fromJson(uRacks, new TypeToken<ArrayList<BikeRack>>() {
+            }.getType());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -70,13 +152,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return bikeRacks;
     }
 
-    private void AddMarkers(ArrayList<BikeRack> bikeRacks){
-        for(int i = 0; i < bikeRacks.size();i++){
+    private void AddMarkers(ArrayList<BikeRack> bikeRacks) {
+        for (int i = 0; i < bikeRacks.size(); i++) {
             BikeRack current = bikeRacks.get(i);
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(new LatLng(current.getLatitude(),current.getLongitude()));
+            markerOptions.position(new LatLng(current.getLatitude(), current.getLongitude()));
             markerOptions.title(current.getTitle());
-            markerOptions.snippet(current.getNumberOfRacks() + " " + (current.getIsSheltered()?"sheltered":"unsheltered") + " " + current.getType() + " Racks");
+            markerOptions.snippet(current.getNumberOfRacks() + " " + (current.getIsSheltered() ? "sheltered" : "unsheltered") + " " + current.getType() + " Racks");
             mMap.addMarker(markerOptions);
         }
     }
@@ -95,5 +177,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return null;
         }
         return json;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Maps Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.logan.bikerackfinder/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Maps Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.example.logan.bikerackfinder/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }
